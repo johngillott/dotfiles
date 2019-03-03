@@ -5,6 +5,12 @@ if [ -x .bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+GIT_PROMPT_ONLY_IN_REPO=1
+if [ -x ~/.bash-git-prompt/gitprompt.sh ]; then
+    # shellcheck disable=SC1090
+    . ~/.bash-git-prompt/gitprompt.sh
+fi
+
 export EDITOR=vim
 
 # init Go environment
