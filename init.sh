@@ -20,7 +20,7 @@ if [ $? -gt 0 ]; then
             exit 4
         fi
     elif [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "Installing: stow"
+        echo "installing: stow"
         brew update
         brew install stow
     else
@@ -28,3 +28,17 @@ if [ $? -gt 0 ]; then
         exit 127
     fi
 fi
+
+git submodule init
+git submodule update
+
+# iterate over directories, run init script, and stow
+for f in */; do
+    dir=$(echo "$f" | sed 's/.$//')
+    if [[ -x "./$dir/init.sh" ]]; then
+        echo "running script: $dir"
+        ./"$dir"/init.sh
+    fi
+    echo "running stow: $dir"
+    stow --ignore='^init.sh$' "$dir"
+done;
