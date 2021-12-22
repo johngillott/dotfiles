@@ -20,6 +20,8 @@ if [ $? -gt 0 ]; then
             exit 4
         fi
     elif [[ "$OSTYPE" == "darwin"* ]]; then
+        echo "installing: homebrew"
+        mkdir homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C homebrew
         echo "installing: stow"
         brew update
         brew install stow
