@@ -23,7 +23,6 @@ if [ $? -gt 0 ]; then
         echo "installing: homebrew"
         mkdir homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C homebrew
         echo "installing: stow"
-        brew update
         brew install stow
     else
         echo 'GNU Stow must be installed...'
@@ -34,13 +33,12 @@ fi
 git submodule init
 git submodule update
 
-# iterate over directories, run init script, and stow
-# for f in */; do
-#     dir=$("${f//.$/}")
-#     if [[ -x "./$dir/init.sh" ]]; then
-#         echo "running script: $dir"
-#         ./"$dir"/init.sh
-#     fi
-#     echo "running stow: $dir"
-#     stow --ignore='^init.sh$' "$dir"
-# done;
+for f in */; do
+    dir="${f/\//}"
+    if [[ -x "./$dir/init.sh" ]]; then
+        echo "Running script: $dir"
+        "./$dir/init.sh"
+    fi
+    echo "Running stow: $dir"
+    stow --ignore='^init.sh$' "$dir"
+done;
